@@ -40,6 +40,8 @@ To test the libs, run `make test`.
 
 If you do not want to compile libprom by yourself, any successful CI job on the [Github Action Page](https://github.com/jelmd/libprom/actions) contains the libprom archive for x86_64 Ubuntu, where the CI tests have been run. Just click on a CI job and scroll down to the **Artifacts** section. On Linux they probably work on most more or less recent distributions.
 
+Last but not least you may try the Ubuntu packages hosted on [https://pkg.cs.ovgu.de/LNF/linux/ubuntu](https://pkg.cs.ovgu.de/LNF/linux/ubuntu)/**release**/.
+
 API, Documentation, Usage
 -------------------------
 - https://jelmd.github.io/libprom/

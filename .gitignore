@@ -2,8 +2,11 @@
 .vscode
 prom/build
 prom/build.test
+prom/tags
 promhttp/build
+promhttp/tags
 promtest/build
+promtest/tags
 example/example
 docs/html
 docs/latex
