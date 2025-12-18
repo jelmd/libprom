@@ -47,7 +47,8 @@ void promhttp_set_active_collector_registry(pcr_t *registry);
  *
  * @return A reference to the started daemon.
  */
-struct MHD_Daemon *promhttp_start_daemon(unsigned int flags, unsigned short port, MHD_AcceptPolicyCallback apc, void *apc_cls, ...);
+struct MHD_Daemon *promhttp_start_daemon(unsigned int flags, unsigned short port, MHD_AcceptPolicyCallback apc, void *apc_cls);
+struct MHD_Daemon *promhttp_start_daemon_va(unsigned int flags, unsigned short port, MHD_AcceptPolicyCallback apc, void *apc_cls, ...);
 
 /**
  * @brief Shutdown the given HTTP daemon. This is actually just a 1:1 wrapper
