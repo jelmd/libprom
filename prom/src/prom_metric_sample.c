@@ -63,10 +63,10 @@ pms_add(pms_t *self, double r_value) {
 	PROM_ASSERT(self != NULL);
 	if (r_value < 0)
 		return 1;
-	_Atomic double old = atomic_load(&self->r_value);
+	double old = atomic_load(&self->r_value);
 	for (;;) {
-		_Atomic double new = ATOMIC_VAR_INIT(old + r_value);
-		if (atomic_compare_exchange_weak(&self->r_value, &old, new))
+		double desired = ATOMIC_VAR_INIT(old + r_value);
+		if (atomic_compare_exchange_weak(&self->r_value, &old, desired))
 			return 0;
 	}
 }
@@ -79,10 +79,10 @@ pms_sub(pms_t *self, double r_value) {
 			self->type, self->l_value, self->r_value);
 		return 1;
 	}
-	_Atomic double old = atomic_load(&self->r_value);
+	double old = atomic_load(&self->r_value);
 	for (;;) {
-		_Atomic double new = ATOMIC_VAR_INIT(old - r_value);
-		if (atomic_compare_exchange_weak(&self->r_value, &old, new))
+		double desired = ATOMIC_VAR_INIT(old - r_value);
+		if (atomic_compare_exchange_weak(&self->r_value, &old, desired))
 			return 0;
 	}
 }

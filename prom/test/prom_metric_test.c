@@ -16,6 +16,7 @@
  */
 
 #include "prom_test_helpers.h"
+#include <stdatomic.h>
 
 void
 test_metric_with_no_labels(void) {
@@ -24,7 +25,7 @@ test_metric_with_no_labels(void) {
 	pms_t *sample = pms_from_labels(metric, NULL);
 	pms_set(sample, 1.0);
 	sample = pms_from_labels(metric, NULL);
-	TEST_ASSERT_EQUAL_DOUBLE(1.0, (_Atomic double)sample->r_value);
+	TEST_ASSERT_EQUAL_DOUBLE(1.0, atomic_load(&sample->r_value));
 	prom_metric_destroy(metric);
 	metric = NULL;
 }
@@ -37,7 +38,7 @@ test_metric_sample_from_labels(void) {
 	pms_t *sample = pms_from_labels(metric, values);
 	pms_set(sample, 1.0);
 	sample = pms_from_labels(metric, values);
-	TEST_ASSERT_EQUAL_DOUBLE(1.0, (_Atomic double)sample->r_value);
+	TEST_ASSERT_EQUAL_DOUBLE(1.0, atomic_load(&sample->r_value));
 	prom_metric_destroy(metric);
 	metric = NULL;
 }
