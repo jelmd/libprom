@@ -84,6 +84,19 @@ promhttp_start_daemon(unsigned int flags, unsigned short port,
 	return MHD_start_daemon(flags, port, apc, apc_cls, &promhttp_handler, NULL, MHD_OPTION_END);
 }
 
+struct MHD_Daemon *
+promhttp_start_daemon_va(unsigned int flags, unsigned short port,
+	MHD_AcceptPolicyCallback apc, void *apc_cls, ...)
+{
+	struct MHD_Daemon *daemon;
+	va_list ap;
+
+	va_start (ap, apc_cls);
+	daemon = MHD_start_daemon_va(flags, port, apc, apc_cls, &promhttp_handler, NULL, ap);
+	va_end (ap);
+	return daemon;
+}
+
 void promhttp_stop_daemon(struct MHD_Daemon *daemon) {
 	MHD_stop_daemon(daemon);
 }
