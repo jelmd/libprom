@@ -1,9 +1,12 @@
-CMAKE_EXTRA_OPTS ?= -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_SKIP_BUILD_RPATH=TRUE
+PREFIX_DEFAULT := $(shell test x`uname -o 2>/dev/null` = x'illumos' && printf /opt/local || printf /usr )
+PREFIX ?= $(PREFIX_DEFAULT)
+
+CMAKE_EXTRA_OPTS ?= -DCMAKE_INSTALL_PREFIX=$(PREFIX) -DCMAKE_SKIP_BUILD_RPATH=TRUE
 MAKE_FLAGS ?= VERBOSE=1
 CFLAGS ?= -DPROM_LOG_ENABLE -g -O3
 
 LIB_PATH_SFX := $(shell [ `uname -s` = 'SunOS' ] && echo  '_64' )
-LIB_PATH := .:$$PWD/prom/build:$$PWD/promhttp/build:/opt/local/lib
+LIB_PATH := .:$$PWD/prom/build:$$PWD/promhttp/build:$(PREFIX)/lib
 
 # If TEST is set, build test instead of production binaries
 test: TEST := 1
@@ -67,3 +70,14 @@ smoke: build
 	PATH=$${PWD}/bin:$${PATH} \
 	LD_LIBRARY_PATH$(LIB_PATH_SFX)=$(LIB_PATH):$$PWD/promtest/build \
 	promtest/build/promtest
+
+install:
+	cd prom/build$(TESTDIR) && $(MAKE) install
+
+uninstall:
+	rm -rf $(PREFIX)/include/libprom $(PREFIX)/lib/libprom*
+
+tgz:
+	DESTDIR=./tmp $(MAKE) install
+	tar cplf - -C prom/build$(TESTDIR)/tmp .$(PREFIX) | gzip -c > prom/build$(TESTDIR)//libprom.tar.gz
+	ls -al prom/build$(TESTDIR)//libprom.tar.gz

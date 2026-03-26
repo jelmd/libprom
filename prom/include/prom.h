@@ -165,10 +165,10 @@ limitations under the License.
  * \c pcr_init(PROM_PROCESS, ...) reads in all process
  * related
  * data now, updates the values of the relevant metrics and after that it
- * returns the list of metrics to include iin the response as well.
+ * returns the list of metrics to include in the response as well.
  *
  * So the take-away here is, that collect_fn() may trigger other things like
- * metric updates, too. But since it is per default part of the HTTP resonse
+ * metric updates, too. But since it is per default part of the HTTP response
  * generation, it should be very fast to prevent any timeouts. Depending on
  * the [flags](https://www.gnu.org/software/libmicrohttpd/manual/html_node/microhttpd_002dconst.html#microhttpd_002dconst#index-MHD_005fFLAG)
  * passed to the \c promhttp_start_daemon() call the http daemon may answers

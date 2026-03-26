@@ -27,9 +27,9 @@ Improvements wrt. to the forked source:
 
 Build, Install, Test
 --------------------
-Requirements: A recent cmake, gcc and libmicrohttpd version incl. development
-aka header files. Other compilers than gcc may work, too (but have not been
-tested yet).
+Requirements: A recent cmake, GNU make, gcc, libmicrohttpd incl. development
+aka header files and optionally doxygen to generate documentation if needed.
+NOTE: Other compilers than gcc may work, too (but have not been tested yet).
 
 To build libprom and libpromhttp just run `make`. To build the API docs, 
 run `make docs`. To install the libs, etc. change the working directory

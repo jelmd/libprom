@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+      - ci
   pull_request:
     paths-ignore:
       - '.github/**'
@@ -26,7 +27,7 @@ concurrency:
 jobs:
   job_1a:
     name: Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Environment
         env:
@@ -54,7 +55,7 @@ jobs:
           sudo apt-get install ksh93 || sudo apt-get install ksh
           sudo apt-get install ${MISSING_BUILD_PKGS}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build
         run: |
           echo "APP_VERSION=$( cat VERSION )" >>$GITHUB_ENV
@@ -68,14 +69,14 @@ jobs:
               tar cplzf ${{ runner.temp }}/libprom.tar.gz \
                   --xform="s|^.|libprom-${APP_VERSION}|" .
       - name: Upload binary archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libprom-${{ env.DISTRO_NAME }}_${{ env.DISTRO_VERSION }}-${{ env.APP_VERSION }}
           path: ${{ runner.temp }}/libprom.tar.gz
 
   job_2a:
     name: Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     # This job needs to do a lot more work than just building the libs. So
     # if building the libs fails, it does not make a lot of sense to try to run
     # any tests. Therefore we skip it automatically by building the libs first,
@@ -83,7 +84,7 @@ jobs:
     needs: job_1a
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install packages
         run: |
           echo 'man-db man-db/auto-update boolean false' | \
@@ -92,17 +93,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install ${MISSING_BUILD_PKGS}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Test run
         run: |
           make test
 
   job_1b:
     name: Docs
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install packages
         run: |
           echo 'man-db man-db/auto-update boolean false' | \
@@ -118,14 +119,14 @@ jobs:
           ${GHAH} -c showEnv
           make docs
       - name: Upload docs archive
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages
           path: 'docs/html'
 
   job_2b:
     name: Github pages
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: job_1b
     # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
     permissions:
@@ -137,4 +138,4 @@ jobs:
     steps:
       - name: Deploy GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4

@@ -71,13 +71,15 @@ test_pll_push(void) {
 	pll_destroy(l);
 }
 
+static
+pll_compare_t compare_fn(void *item_a, void *item_b) {
+	const char *str_a = (const char *) item_a;
+	const char *str_b = (const char *) item_b;
+	return strcmp(str_a, str_b);
+}
+
 void
 test_pll_remove(void) {
-	auto pll_compare_t compare_fn(void *item_a, void *item_b) {
-		const char *str_a = (const char *) item_a;
-		const char *str_b = (const char *) item_b;
-		return strcmp(str_a, str_b);
-	}
 
 	pll_t *list = pll_new();
 	pll_set_free_fn(list, pll_no_op_free);
