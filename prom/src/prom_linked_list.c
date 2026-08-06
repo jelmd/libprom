@@ -131,15 +131,7 @@ pll_pop(pll_t *self) {
 	self->head = node->next;
 	if (self->tail == node)
 		self->tail = NULL;
-	if (node->item != NULL) {
-		if (self->free_fn) {
-			(*self->free_fn)(node->item);
-		} else {
-			prom_free(node->item);
-		}
-	}
-	node->item = NULL;
-	node = NULL;
+    prom_free(node);
 	self->size--;
 	return item;
 }
