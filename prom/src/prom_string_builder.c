@@ -16,6 +16,7 @@
  */
 
 #include <stddef.h>
+#include <stdint.h>
 
 // Public
 #include "prom_alloc.h"
@@ -101,12 +102,17 @@ psb_destroy(psb_t *self) {
 static int
 psb_ensure_space(psb_t *self, size_t add_len) {
 	PROM_ASSERT(self != NULL);
-	if (add_len == 0 || self->allocated >= self->len + add_len + 1)
+	size_t required = self->len + add_len + 1;
+	if (add_len == 0 || self->allocated >= required)
 		return 0;
-
+    if (add_len > SIZE_MAX - self->len - 1)
+        return 1;
 	size_t sz = self->allocated;
-	while (sz < self->len + add_len + 1)
+	while (sz < required) {
+        if (sz > SIZE_MAX / 2)
+            return 1;
 		sz <<= 1;
+    }
 	char *str = (char *) prom_realloc(self->str, sz);
 	if (str == NULL)
 		return 1;
