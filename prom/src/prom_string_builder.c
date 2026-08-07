@@ -117,6 +117,7 @@ psb_ensure_space(psb_t *self, size_t add_len) {
 	if (str == NULL)
 		return 1;
 	self->str = str;
+    self->allocated = sz;
 	return 0;
 }
 
