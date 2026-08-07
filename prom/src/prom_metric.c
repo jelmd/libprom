@@ -163,6 +163,8 @@ pms_from_labels(prom_metric_t *self, const char **label_values) {
 	return sample;
 
 fail:
+    if (l_value != NULL)
+        prom_free((void *) l_value);
 	if (pthread_rwlock_unlock(self->rwlock))
 		PROM_WARN(PROM_PTHREAD_RWLOCK_UNLOCK_ERROR, NULL);
 	return NULL;
